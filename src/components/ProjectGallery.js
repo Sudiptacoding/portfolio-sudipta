@@ -10,7 +10,7 @@ const ProjectGallery = () => {
 
   useEffect(() => {
     axios
-      .get("https://live-sarvar-all.vercel.app/project") // <-- Backend URL
+      .get("https://demo-sarver.vercel.app/project") // <-- Backend URL
       .then((res) => {
         setProjects(res.data);
        

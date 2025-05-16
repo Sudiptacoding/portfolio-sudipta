@@ -32,38 +32,36 @@ export default function PortfolioForm() {
     setFormData({ ...formData, [key]: value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    try {
-      const response = await fetch("https://live-sarvar-all.vercel.app/project", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+  try {
+    const response = await axios.post('https://demo-sarver.vercel.app/project', formData);
 
-      const result = await response.json();
-      setFormData({
-        title: "",
-        category: "",
-        github: "",
-        imageUrl: "",
-        buttonUrl: "",
-      });
-    } catch (error) {
-      console.error("❌ Failed to submit project:", error);
-    }
-  };
+    console.log("✅ Project submitted successfully:", response.data);
+
+    // Reset the form
+    setFormData({
+      title: "",
+      category: "",
+      github: "",
+      imageUrl: "",
+      buttonUrl: "",
+    });
+  } catch (error) {
+    console.error("❌ Failed to submit project:", error);
+  }
+};
+
 
 
     const [projects, setProjects] = useState([]);
 
   // Fetch projects on load
   useEffect(() => {
-    axios.get("https://live-sarvar-all.vercel.app/project")
+    axios.get("https://demo-sarver.vercel.app/project")
       .then((res) => {
+        console.log(res.data)
         setProjects(res.data);
       })
       .catch((err) => {
@@ -77,7 +75,7 @@ export default function PortfolioForm() {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`https://live-sarvar-all.vercel.app/project/${id}`);
+      await axios.delete(`https://demo-sarver.vercel.app/project/${id}`);
       setProjects((prevProjects) => prevProjects.filter((p) => p._id !== id));
     } catch (err) {
       console.error("Delete failed:", err);
