@@ -17,7 +17,7 @@ export default function Page() {
 
   const handleDownload = () => {
     saveAs(
-      "/image/mern-stack-resume.pdf",
+      "/image/MERN-STACK-developer-resume-of-Sudipta-Biswas.pdf",
       "MERN-STACK developer  resume of Sudipta Biswas.pdf"
     );
   };
