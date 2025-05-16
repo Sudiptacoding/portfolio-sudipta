@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import CountUp from "react-countup";
 import { FaDownload } from "react-icons/fa6";
 import { saveAs } from "file-saver";
+import Image from "next/image";
 
 export default function Page() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -58,10 +59,18 @@ export default function Page() {
       } 
       lg:px-16 px-4 flex flex-wrap items-center justify-between`}
         >
-          <img
+          {/* <img
             className="md:w-[8rem] w-[7rem]"
             src="./image/flamingtext_com-3754455155.png"
             alt="Logo"
+          /> */}
+
+          <Image
+            className="md:w-[8rem] w-[7rem]"
+            src="/image/flamingtext_com-3754455155.png"
+            alt="Logo"
+            width={128} // 8rem = 128px
+            height={64} // আপনি প্রয়োজন অনুযায়ী height দিন
           />
 
           <button
@@ -117,8 +126,9 @@ export default function Page() {
           <div className="w-full sm:w-1/2 z-10 space-y-4">
             <h4 className="text-lg xl:text-2xl">Hey There</h4>
             <h1 className="text-4xl sm:text-5xl md:text-6xl 2xl:text-7xl font-serif font-bold">
-              I'm <span className="text-rose-500">Sudipta</span>
+              I&apos;m <span className="text-rose-500">Sudipta</span>
             </h1>
+            
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold">
               Biswas
             </h1>
@@ -144,10 +154,12 @@ export default function Page() {
 
           {/* Hero Image */}
           <div className="w-full sm:w-1/2 mt-10 sm:mt-0 flex justify-center">
-            <img
+            <Image
               className="2xl:h-[760px] xl:h-[600px] md:h-[450px] sm:h-[400px] h-[300px] object-cover"
-              src="./image/Untitled design (3).png"
+              src="/image/Untitled design (3).png" // public ফোল্ডার ধরে
               alt="Hero"
+              width={1200} // আনুমানিক প্রস্থ দিন (যেমন 1200px)
+              height={760} // আনুমানিক উচ্চতা দিন (যেমন 760px)
             />
           </div>
         </section>

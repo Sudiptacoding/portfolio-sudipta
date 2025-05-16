@@ -1,139 +1,23 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { GrGithub } from "react-icons/gr";
+import Image from "next/image";
 
 const ProjectGallery = () => {
   const [projects, setProjects] = useState([]);
   const [activeCategory, setActiveCategory] = useState("all");
-
-  const data = [
-    {
-      id: 1,
-      title: "Creative Agency Branding",
-      category: "branding",
-      imageUrl:
-        "https://i.postimg.cc/1RHQNQQW/summer-sale-project-netlify-app.png",
-      buttonText: "View Details",
-      buttonUrl: "#",
-    },
-    {
-      id: 2,
-      title: "Marketing Campaign Design",
-      category: "marketing",
-      imageUrl:
-        "https://cdn.tailgrids.com/assets/images/marketing/portfolio/portfolio-01/image-02.jpg",
-      buttonText: "View Details",
-      buttonUrl: "#",
-    },
-    {
-      id: 3,
-      title: "Modern App UI Design",
-      category: "design",
-      imageUrl:
-        "https://cdn.tailgrids.com/assets/images/marketing/portfolio/portfolio-01/image-04.jpg",
-      buttonText: "View Details",
-      buttonUrl: "#",
-    },
-    {
-      id: 4,
-      title: "SaaS Development Platform",
-      category: "development",
-      imageUrl: "https://ibb.co/MyYGWZ8w",
-      buttonText: "View Details",
-      buttonUrl: "#",
-    },
-    {
-      id: 5,
-      title: "SEO & Content Strategy",
-      category: "E-commerce & Product",
-      imageUrl:
-        "https://cdn.tailgrids.com/assets/images/marketing/portfolio/portfolio-01/image-05.jpg",
-      buttonText: "View Details",
-      buttonUrl: "#",
-      frontendRepo: "https://github.com/username/frontend-repo", // Optional
-      github: "sdasd", // Optional
-    },
-    {
-      id: 6,
-      title: "My Project",
-      category: "Business",
-      imageUrl: "https://example.com/image.jpg",
-      link: "https://liveproject.com",
-      frontendRepo: "https://github.com/username/frontend-repo", // Optional
-      github: "https://github.com/username/backend-repo", // Optional
-    },
-    {
-      id: 7,
-      title: "My Project",
-      category: "Business",
-      imageUrl: "https://example.com/image.jpg",
-      link: "https://liveproject.com",
-      frontendRepo: "https://github.com/username/frontend-repo", // Optional
-      github: "https://github.com/username/backend-repo", // Optional
-    },
-    {
-      id: 8,
-      title: "My Project",
-      category: "Business",
-      imageUrl: "https://example.com/image.jpg",
-      link: "https://liveproject.com",
-      frontendRepo: "https://github.com/username/frontend-repo", // Optional
-      github: "https://github.com/username/backend-repo", // Optional
-    },
-    {
-      id: 9,
-      title: "My Project",
-      category: "Business",
-      imageUrl: "https://example.com/image.jpg",
-      link: "https://liveproject.com",
-      frontendRepo: "https://github.com/username/frontend-repo", // Optional
-      github: "https://github.com/username/backend-repo", // Optional
-    },
-    {
-      id: 10,
-      title: "My Project",
-      category: "Business",
-      imageUrl: "https://example.com/image.jpg",
-      link: "https://liveproject.com",
-      frontendRepo: "https://github.com/username/frontend-repo", // Optional
-      github: "https://github.com/username/backend-repo", // Optional
-    },
-    {
-      id: 11,
-      title: "My Project",
-      category: "Business",
-      imageUrl: "https://example.com/image.jpg",
-      link: "https://liveproject.com",
-      frontendRepo: "https://github.com/username/frontend-repo", // Optional
-      github: "https://github.com/username/backend-repo", // Optional
-    },
-    {
-      id: 12,
-      title: "My Project",
-      category: "Business",
-      imageUrl: "https://example.com/image.jpg",
-      link: "https://liveproject.com",
-      frontendRepo: "https://github.com/username/frontend-repo", // Optional
-      github: "https://github.com/username/backend-repo", // Optional
-    },
-    {
-      id: 13,
-      title: "My Project",
-      category: "Business",
-      imageUrl: "https://example.com/image.jpg",
-      link: "https://liveproject.com",
-      frontendRepo: "https://github.com/username/frontend-repo", // Optional
-      github: "https://github.com/username/backend-repo", // Optional
-    },
-  ];
+ 
 
   useEffect(() => {
-    // Replace with your real API endpoint
-    // axios.get("/api/projects").then((res) => {
-    //   setProjects(res.data);
-    // });
-
-    setProjects(data);
+    axios
+      .get("https://live-sarvar-all.vercel.app/project") // <-- Backend URL
+      .then((res) => {
+        setProjects(res.data);
+       
+      })
+      .catch((error) => {
+        console.error("Error fetching projects:", error);
+      });
   }, []);
 
   const filteredProjects =
@@ -145,7 +29,9 @@ const ProjectGallery = () => {
 
   const categories = [
     "all",
-    ...new Set(projects.map((p) => p.category.toLowerCase())),
+    ...new Set(
+      projects.map((p) => p.category?.toLowerCase?.() || "uncategorized")
+    ),
   ];
 
   return (
@@ -180,9 +66,11 @@ const ProjectGallery = () => {
               className="bg-[#1f1f1f] rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow group relative"
             >
               <div className="relative overflow-hidden rounded-t-2xl">
-                <img
+                <Image
                   src={project.imageUrl}
                   alt={project.title}
+                  width={500} // প্রয়োজন অনুযায়ী দিন
+                  height={224} // (যেহেতু h-56 = 224px)
                   className="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 {/* Conditional rendering of GitHub icon */}
@@ -200,6 +88,7 @@ const ProjectGallery = () => {
                   </a>
                 )}
               </div>
+              
 
               <div className="p-5">
                 <span className=" text-xs uppercase tracking-widest">
@@ -209,7 +98,7 @@ const ProjectGallery = () => {
                   {project.title}
                 </h3>
                 <a
-                  href={project.link}
+                  href={project.buttonUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group inline-flex items-center justify-center mt-auto text-sm font-medium px-5 py-2.5 cursor-pointer rounded-full text-white bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 shadow-lg transition-all duration-300 hover:from-purple-700 hover:via-pink-600 hover:to-red-600 hover:shadow-2xl"
@@ -299,11 +188,14 @@ const ProjectGallery = () => {
                 className="bg-[#1f1f1f] rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow group relative"
               >
                 <div className="relative overflow-hidden rounded-t-2xl">
-                  <img
+                  <Image
                     src={project.imageUrl}
                     alt={project.title}
+                    width={500} // আপনার ডিজাইন অনুযায়ী দিন
+                    height={224} // h-56 মানে 224px (optional — আপনি নিজের মতো দিন)
                     className="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-105"
                   />
+
                   {project.github && (
                     <a
                       href={project.github}

@@ -15,7 +15,7 @@ function AboutMe() {
         </div>
 
         <h4 className="capitalize text-xl md:text-2xl font-semibold text-gray-300">
-          I'm Sudipta Biswas and I'm{" "}
+          I&apos;m Sudipta Biswas and I&apos;m{" "}
           <span className="text-rose-500">web developer</span>
         </h4>
         <p className="text-gray-400 leading-relaxed">

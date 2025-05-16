@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 export default function PortfolioForm() {
   const [formData, setFormData] = useState({
     title: "",
     category: "",
-    github:"",
-    imageUrl: "",   
+    github: "",
+    imageUrl: "",
     buttonUrl: "",
   });
 
@@ -31,16 +32,71 @@ export default function PortfolioForm() {
     setFormData({ ...formData, [key]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting Data:", formData);
+
+    try {
+      const response = await fetch("https://live-sarvar-all.vercel.app/project", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+      setFormData({
+        title: "",
+        category: "",
+        github: "",
+        imageUrl: "",
+        buttonUrl: "",
+      });
+    } catch (error) {
+      console.error("❌ Failed to submit project:", error);
+    }
   };
+
+
+    const [projects, setProjects] = useState([]);
+
+  // Fetch projects on load
+  useEffect(() => {
+    axios.get("https://live-sarvar-all.vercel.app/project")
+      .then((res) => {
+        setProjects(res.data);
+      })
+      .catch((err) => {
+        console.error("Error fetching projects:", err);
+      });
+  }, []);
+
+  // Handle delete
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this project?");
+    if (!confirmDelete) return;
+
+    try {
+      await axios.delete(`https://live-sarvar-all.vercel.app/project/${id}`);
+      setProjects((prevProjects) => prevProjects.filter((p) => p._id !== id));
+    } catch (err) {
+      console.error("Delete failed:", err);
+    }
+  };
+
+
+
+
+
+
 
   if (!authenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
         <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-sm">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">Enter Password</h2>
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">
+            Enter Password
+          </h2>
           <form onSubmit={handleAuth} className="space-y-4">
             <input
               type="password"
@@ -71,7 +127,10 @@ export default function PortfolioForm() {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Title */}
           <div>
-            <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="title"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Title
             </label>
             <input
@@ -86,7 +145,10 @@ export default function PortfolioForm() {
 
           {/* Category */}
           <div>
-            <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="category"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Category
             </label>
             <select
@@ -105,7 +167,10 @@ export default function PortfolioForm() {
 
           {/* Gitgub URL */}
           <div>
-            <label htmlFor="github" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="github"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Github URL
             </label>
             <input
@@ -120,7 +185,10 @@ export default function PortfolioForm() {
 
           {/* Image URL */}
           <div>
-            <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="imageUrl"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Image URL
             </label>
             <input
@@ -133,11 +201,12 @@ export default function PortfolioForm() {
             />
           </div>
 
-  
-
           {/* Button URL */}
           <div>
-            <label htmlFor="buttonUrl" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="buttonUrl"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Button URL
             </label>
             <input
@@ -161,6 +230,36 @@ export default function PortfolioForm() {
           </div>
         </form>
       </div>
+
+
+      <div className="p-6">
+      <h2 className="text-2xl font-bold mb-4">My Projects</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {projects.map((project) => (
+          <div key={project._id} className="border rounded-lg p-4 shadow">
+            <img
+              src={project.imageUrl}
+              alt={project.title}
+              className="w-full h-56 object-cover rounded"
+            />
+            <h3 className="text-xl font-bold mt-2">{project.title}</h3>
+            <p>{project.github}</p>
+            <p>{project.buttonUrl}</p>
+            <p className="text-sm text-gray-500">{project.category}</p>
+            <button
+              onClick={() => handleDelete(project._id)}
+              className="mt-2 bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"
+            >
+              Delete
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+
+
+
+
     </div>
   );
 }

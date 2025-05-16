@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React, { useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 
@@ -29,9 +30,16 @@ function Certificate() {
         <div className="flex flex-col lg:flex-row gap-8 items-start lg:items-stretch">
           {/* Left Side: Certificate Image */}
           <div className="w-full lg:w-1/2 h-[450px] rounded-lg overflow-hidden shadow-xl border border-gray-700">
-            <img
+            {/* <img
               src="./image/certificate (2) (1)_page-0001.jpg"
               alt="Certificate"
+              className="w-full h-full object-fill transition-transform duration-300 hover:scale-105"
+            /> */}
+            <Image
+              src="/image/certificate (2) (1)_page-0001.jpg"
+              alt="Certificate"
+              width={800} // আনুমানিক সাইজ
+              height={600}
               className="w-full h-full object-fill transition-transform duration-300 hover:scale-105"
             />
           </div>
@@ -98,16 +106,18 @@ function Certificate() {
             className="bg-white p-4 rounded-lg shadow-xl max-w-4xl w-[80%] md:w-[40%] relative"
             onClick={(e) => e.stopPropagation()}
           >
-            <img
-              src="./image/certificate (2) (1)_page-0001.jpg"
+            <Image
+              src="/image/certificate (2) (1)_page-0001.jpg"
               alt="Certificate Full View"
-              className="w-full rounded-lg"
+              width={1200} // আপনার ছবির আনুমানিক সাইজ দিন
+              height={850}
+              className="w-full rounded-lg object-contain"
             />
             <button
               className="mt-4 text-black text-xl p-2  rounded-full font-semibold block mx-auto absolute -top-4 -right-1"
               onClick={() => setIsModalOpen(false)}
             >
-            <RxCross2 />
+              <RxCross2 />
             </button>
           </div>
         </div>

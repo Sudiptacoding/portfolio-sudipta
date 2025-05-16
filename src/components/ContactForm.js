@@ -18,7 +18,7 @@ const ContactForm = () => {
       )
       .then(
         (result) => {
-          console.log(result.text);
+          
           setStatus("Message sent successfully!");
           form.current.reset();
 
@@ -28,7 +28,7 @@ const ContactForm = () => {
           }, 3000);
         },
         (error) => {
-          console.log(error.text);
+       
           setStatus("Failed to send message. Please try again.");
 
           // 3 সেকেন্ড পরে error message খালি করে দাও
