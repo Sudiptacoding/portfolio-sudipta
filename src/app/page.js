@@ -1,103 +1,204 @@
-import Image from "next/image";
+"use client";
+import AboutMe from "@/components/AboutMe";
+import Certificate from "@/components/Certificate";
+import ContactForm from "@/components/ContactForm";
+import EducationSection from "@/components/EducationSection";
+import Footer from "@/components/Footer";
+import MySkills from "@/components/MySkills";
+import ProjectGallery from "@/components/ProjectGallery";
+import React, { useEffect, useState } from "react";
+import CountUp from "react-countup";
+import { FaDownload } from "react-icons/fa6";
+import { saveAs } from "file-saver";
 
-export default function Home() {
+export default function Page() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleDownload = () => {
+    saveAs(
+      "/image/mern-stack-resume.pdf",
+      "MERN-STACK developer  resume of Sudipta Biswas.pdf"
+    );
+  };
+
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <>
+      {/* Global style for smooth scroll */}
+      <style>
+        {`
+          html {
+            scroll-behavior: smooth;
+          }
+        `}
+      </style>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      <div className="w-full min-h-screen bg-black text-white font-sans">
+        {/* Navbar */}
+        <header
+          className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 
+      ${
+        isScrolled
+          ? "py-0 backdrop-blur-md bg-black/50 shadow-md"
+          : "py-4 bg-black/30 backdrop-blur-sm"
+      } 
+      lg:px-16 px-4 flex flex-wrap items-center justify-between`}
+        >
+          <img
+            className="md:w-[8rem] w-[7rem]"
+            src="./image/flamingtext_com-3754455155.png"
+            alt="Logo"
+          />
+
+          <button
+            className="md:hidden text-gray-200"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+            <svg
+              className="fill-current"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 20 20"
+            >
+              <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+            </svg>
+          </button>
+
+          <nav
+            className={`${
+              isMenuOpen ? "block" : "hidden"
+            } md:flex md:items-center w-full md:w-auto  md:mt-0 absolute md:static top-full left-0 bg-black md:bg-transparent z-10 px-4 py-2 md:p-0 rounded-md`}
+          >
+            <ul className="md:flex md:space-x-6 space-y-3 md:space-y-0 text-base xl:text-lg text-gray-100">
+              {[
+                { name: "Home", href: "#home" },
+                { name: "About Me", href: "#about" },
+                { name: "Education", href: "#education" },
+                { name: "Experience", href: "#experience" },
+                { name: "Projects", href: "#projects" },
+                { name: "Certificate", href: "#certificate" },
+                { name: "Contact", href: "#contact" },
+              ].map((item, i) => (
+                <li key={i}>
+                  <a
+                    href={item.href}
+                    className="block py-2 px-1 hover:text-rose-500 transition-all duration-200"
+                    onClick={() => setIsMenuOpen(false)} // close menu on click
+                  >
+                    {item.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </header>
+
+        {/* Hero Section */}
+        <section
+          id="home"
+          className="lg:px-16 px-4 h-full flex flex-col sm:flex-row sm:items-center relative z-10 pt-20 lg:pt-0"
+        >
+          {/* Text Info */}
+          <div className="w-full sm:w-1/2 z-10 space-y-4">
+            <h4 className="text-lg xl:text-2xl">Hey There</h4>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl 2xl:text-7xl font-serif font-bold">
+              I'm <span className="text-rose-500">Sudipta</span>
+            </h1>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold">
+              Biswas
+            </h1>
+            <h4 className="text-rose-500 text-xl lg:text-2xl">
+              -- MERN Stack Developer
+            </h4>
+            <p className="lg:w-[80%] text-md md:text-lg 2xl:text-xl text-gray-300">
+              Experienced Full-Stack Developer with 5+ years of expertise in
+              HTML5, CSS3, Tailwind CSS, React, Next.js, Express.js, MongoDB,
+              and MERN stack.
+            </p>
+
+            <div className="mt-7 flex gap-3 w-48">
+              <a
+                className="py-3 px-4 inline-flex justify-center cursor-pointer items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                onClick={handleDownload}
+              >
+                Download Resume
+                <FaDownload />
+              </a>
+            </div>
+          </div>
+
+          {/* Hero Image */}
+          <div className="w-full sm:w-1/2 mt-10 sm:mt-0 flex justify-center">
+            <img
+              className="2xl:h-[760px] xl:h-[600px] md:h-[450px] sm:h-[400px] h-[300px] object-cover"
+              src="./image/Untitled design (3).png"
+              alt="Hero"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          </div>
+        </section>
+
+        {/* Stats Section */}
+        <div className="flex flex-wrap justify-center items-center gap-6 px-4 py-10 bg-gradient-to-t from-gray-800/40 to-transparent">
+          {[
+            { number: "5", label: "Years of Experience" },
+            { number: "150", label: "GitHub Projects Completed" },
+            { number: "21024", label: "Hours Coding Experience" },
+          ].map((item, index) => (
+            <div key={index} className="text-center">
+              <div className="flex justify-center items-end gap-1">
+                <h2 className="text-4xl md:text-6xl font-bold">
+                  <CountUp end={item.number} />
+                </h2>
+
+                <span className="text-rose-500 text-3xl md:text-5xl font-extrabold">
+                  +
+                </span>
+              </div>
+              <p className="mt-2 text-sm md:text-lg text-gray-300">
+                {item.label}
+              </p>
+            </div>
+          ))}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+
+        {/* Other Sections with IDs for smooth scroll */}
+        <section id="about">
+          <AboutMe />
+        </section>
+        <section id="education">
+          <EducationSection />
+        </section>
+        {/* Assuming "Experience" is part of MySkills or you can create a new section */}
+        <section id="experience">
+          <MySkills />
+        </section>
+        <section id="projects">
+          <ProjectGallery />
+        </section>
+        <section id="certificate">
+          <Certificate />
+        </section>
+        <section id="contact">
+          <ContactForm />
+        </section>
+
+        <Footer />
+      </div>
+    </>
   );
 }
